@@ -6,7 +6,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export const generateImageIds = async (req, res) => {
     try {
-        const { prompt = '', versions = 1, criteria = {} } = req.body;
+        const { prompt = '', versions = 1, criteria = {}, aspect_ratio = '1:1' } = req.body;
 
         if (!prompt) {
             return res.status(400).json({ s: false, error: "Prompt is required" });
@@ -48,7 +48,7 @@ export const generateImageIds = async (req, res) => {
         if (fluxVersions) {
             try {
                 console.log('inside flux')
-                fluxRes = await geFluxUrl({ ...modelData, versions: fluxVersions });
+                fluxRes = await geFluxUrl({ ...modelData, versions: fluxVersions, aspect_ratio });
                 console.log({ fluxRes })
             } catch (error) {
                 console.error("Error in geFluxUrl:", error);
@@ -67,7 +67,8 @@ export const generateImageIds = async (req, res) => {
         const dalleRes = {
             generation: "GENERATION_2",
             prompt: updatedPrompt,
-            originalPrompt: prompt
+            originalPrompt: prompt,
+            size: getSize(aspect_ratio)
         };
 
         // Only push valid results to the ids array
@@ -87,6 +88,11 @@ export const generateImageIds = async (req, res) => {
     }
 };
 
+const getSize = aspect_ratio => ({
+    '1:1': '1024x1024',
+    '16:9': '1792x1024',
+    '9:16': '1024x1792'
+}[aspect_ratio] ?? '1024x1024');
 
 export const pollImageModels = async (req, res) => {
     const { ids = [] } = req.body;

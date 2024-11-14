@@ -73,9 +73,13 @@ export async function getMidjourneyUrls(data = {}) {
     try {
         const generateResponse = await apiCall('https://cl.imagineapi.dev/items/images/', 'POST', { prompt })
         console.log({ generateResponse })
-        const imageId = generateResponse.data.id;
-        // console.log({ imageId });
-        return { url: imageId, generation: 'GENERATION_3', prompt: originalPrompt, versions };
+        if (generateResponse?.data?.id) {
+            const imageId = generateResponse?.data?.id;
+            // console.log({ imageId });
+            return { url: imageId, generation: 'GENERATION_3', prompt: originalPrompt, versions };
+        } else {
+            return null;
+        }
     } catch (error) {
         console.error("Error in API calls:", error);
         return null;
