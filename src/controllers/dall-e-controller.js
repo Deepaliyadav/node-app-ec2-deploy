@@ -43,7 +43,7 @@ export const getDalleImage = async (req, res) => {
     });
     console.log({ data })
     try {
-      const { prompt, quality = 'standard', size = '1024x1024', style = 'vivid', originalPrompt = '' } = data;
+      const { prompt, quality = 'standard', size = '1024x1024', style = 'natural', originalPrompt = '' } = data;
       const response = await openai.images.generate({ model: "dall-e-3", size, quality, style, prompt, n: 1 });
       console.log({ response: response.data })
       const image_url = response.data[0].url;

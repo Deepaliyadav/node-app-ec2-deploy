@@ -50,12 +50,14 @@ export const getFluxImage = async (req, res) => {
 export async function geFluxUrl(data = {}) {
     const { prompt, versions = 1, aspect_ratio = '1:1', originalPrompt = '' } = data;
     const input = { prompt, num_outputs: Number(versions), aspect_ratio };
+    console.log({ input })
     try {
         const response = await apiCall(
             "https://api.replicate.com/v1/models/black-forest-labs/flux-schnell/predictions",
             "POST",
             { input }
         );
+        console.log({ response })
         const resultUrl = response?.urls?.get;
         if (!resultUrl) return null
         return { url: resultUrl, generation: 'GENERATION_1', prompt: originalPrompt };

@@ -52,7 +52,7 @@ async function apiCall(url, method, body = null) {
         const options = {
             method,
             headers: {
-                "Authorization": `Bearer 6Sa2q3v64tN6WTG44tx_sF_DcW8Ky4ZW`,
+                "Authorization": `Bearer ${process.env.MIDJOURNEY_API_KEY}`,
                 "Content-Type": "application/json"
             }
         };
