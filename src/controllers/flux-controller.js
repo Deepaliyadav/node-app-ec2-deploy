@@ -40,7 +40,6 @@ export const getFluxImage = async (req, res) => {
             }
         })
         return res.json({ s: true, url: urls });
-
     } catch (error) {
         console.error("Error in API calls:", error);
         return res.status(500).json({ s: false, error: "Failed to generate image" });
@@ -68,7 +67,7 @@ export async function geFluxUrl(data = {}) {
 }
 
 export async function geFluxOutput(data) {
-    const { url = '', versions = 2 } = data;
+    const { url = '', versions = 1 } = data;
 
     try {
         const response = await apiCall(url, "GET");
@@ -100,7 +99,7 @@ export async function geFluxOutput(data) {
     } catch (error) {
         console.error("Error in API calls:", error);
         let data = Array.from({ length: versions }, () => {
-            return { id: generateObjectId(), status: 'FAILEDß', model: 'GENERATION_1' };
+            return { id: generateObjectId(), status: 'FAILED', model: 'GENERATION_1' };
         });
         return data;
     }
